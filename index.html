@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#832058" />
+  <title>יישומון ריבוע הקסם | פריזמה</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <img class="logo" src="assets/logo-prisming.png" alt="Prisming" />
+      <h1>יישומון ריבוע הקסם</h1>
+      <div class="topbar-spacer" aria-hidden="true"></div>
+    </header>
+
+    <section class="intro">
+      <p>מחקו מספרים מכוונים כדי להגיע לסכום הנכון בכל שורה ובכל טור.</p>
+      <div class="status-strip" aria-label="מצב המשחק">
+        <div class="status-card"><span>שלב</span><strong id="levelValue">1</strong></div>
+        <div class="status-card"><span>ניקוד</span><strong id="scoreValue">0</strong></div>
+        <div class="status-card"><span>רמזים</span><strong id="hintsValue">3</strong></div>
+      </div>
+    </section>
+
+    <section class="action-bar" aria-label="פעולות המשחק">
+      <button id="newGameBtn" class="btn btn-primary" type="button">משחק חדש</button>
+      <button id="resetBtn" class="btn btn-secondary" type="button">איפוס</button>
+      <button id="hintBtn" class="btn btn-hint" type="button">
+        <span aria-hidden="true">💡</span> רמז
+      </button>
+      <button id="checkBtn" class="btn btn-check" type="button">
+        <span aria-hidden="true">✓</span> בדיקת תשובות
+      </button>
+    </section>
+
+    <section class="workspace">
+      <div class="game-column">
+        <section class="board-card" aria-label="לוח ריבוע הקסם">
+          <div id="board" class="board" dir="ltr"></div>
+        </section>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </div>
+
+      <aside class="instructions-card">
+        <h2>איך משחקים?</h2>
+        <ol>
+          <li>לחצו על מספר כדי למחוק אותו מהלוח.</li>
+          <li>בלוח יש מספרים חיוביים ושליליים, ולכן חשוב להתחשב גם בסימן.</li>
+          <li>סכום המספרים שנותרו בכל שורה צריך להתאים ליעד שמימין.</li>
+          <li>סכום המספרים שנותרו בכל טור צריך להתאים ליעד שמעליו.</li>
+          <li>אפשר ללחוץ שוב על מספר שנמחק כדי להחזיר אותו.</li>
+          <li>כשתסיימו, לחצו על <strong>בדיקת תשובות</strong>.</li>
+        </ol>
+        <p class="level-note">בכל לחיצה על משחק חדש תקבלו לוח חדש, ובכל שלב האתגר נעשה מורכב יותר.</p>
+      </aside>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
