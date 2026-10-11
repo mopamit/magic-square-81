@@ -15,7 +15,72 @@
   const checkBtn = document.getElementById('checkBtn');
   const hintBtn = document.getElementById('hintBtn');
 
+  const modeButtons = [...document.querySelectorAll('[data-mode]')];
+  let mode = 'regular';
   const usedBoards = new Set();
+  // Advanced values are exact multiples of 1/20, avoiding floating-point errors.
+  const advancedUnits = [-80,-70,-60,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,5,10,15,20,25,30,35,40,45,50,60,70,80];
+  const gcd = (a,b) => b ? gcd(b,a%b) : Math.abs(a);
+
+  function formatValue(value) {
+    if (mode === 'regular') {
+      return { type: 'text', aria: String(value), text: String(value) };
+    }
+
+    const negative = value < 0;
+    const n = Math.abs(value);
+
+    if (n % 20 === 0) {
+      const text = `${negative ? '−' : ''}${n / 20}`;
+      return { type: 'text', aria: text, text };
+    }
+
+    // Show fractions only when they are proper fractions (smaller than 1 in absolute value).
+    if (n < 20 && n % 5 === 0) {
+      const d = gcd(n, 20);
+      const numerator = n / d;
+      const denominator = 20 / d;
+      const aria = `${negative ? '−' : ''}${numerator}/${denominator}`;
+      return { type: 'fraction', aria, negative, numerator: String(numerator), denominator: String(denominator) };
+    }
+
+    // Larger non-integers are shown as decimals rather than improper fractions.
+    const decimal = (n / 20).toFixed(2).replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1');
+    const text = `${negative ? '−' : ''}${decimal}`;
+    return { type: 'text', aria: text, text };
+  }
+
+  function displayNumber(value) {
+    return formatValue(value).aria;
+  }
+
+  function formatted(value) {
+    const data = formatValue(value);
+    if (data.type !== 'fraction') return document.createTextNode(data.text);
+
+    const wrapper = document.createElement('span');
+    wrapper.className = 'math-fraction-wrap';
+    wrapper.setAttribute('dir', 'ltr');
+
+    if (data.negative) {
+      const minus = document.createElement('span');
+      minus.className = 'math-fraction-sign';
+      minus.textContent = '−';
+      wrapper.appendChild(minus);
+    }
+
+    const fraction = document.createElement('span');
+    fraction.className = 'math-fraction';
+    const top = document.createElement('span');
+    top.textContent = data.numerator;
+    const bottom = document.createElement('span');
+    bottom.textContent = data.denominator;
+    fraction.append(top, bottom);
+    wrapper.appendChild(fraction);
+    return wrapper;
+  }
+  function putNumber(element,value) { element.replaceChildren(formatted(value)); }
+
 
   let state = {
     level: 1,
@@ -78,7 +143,7 @@
       values = Array.from({ length: SIZE }, () =>
         Array.from({ length: SIZE }, () => {
           let n = 0;
-          while (n === 0) n = randInt(min, max);
+          while (n === 0) n = mode === 'advanced' ? advancedUnits[randInt(0, advancedUnits.length - 1)] : randInt(min, max);
           return n;
         })
       );
@@ -104,6 +169,7 @@
 
   function generatePuzzle(level) {
     const { absTargetMax } = ranges[level];
+    const targetLimit = mode === 'advanced' ? absTargetMax * 20 : absTargetMax;
     let values, solutionKeep, rowTargets, colTargets, signature;
     let tries = 0;
 
@@ -118,8 +184,8 @@
       tries++;
     } while (
       tries < 300 && (
-        rowTargets.some(v => Math.abs(v) > absTargetMax) ||
-        colTargets.some(v => Math.abs(v) > absTargetMax) ||
+        rowTargets.some(v => Math.abs(v) > targetLimit) ||
+        colTargets.some(v => Math.abs(v) > targetLimit) ||
         !rowTargets.some(v => v < 0) ||
         !colTargets.some(v => v < 0) ||
         usedBoards.has(signature)
@@ -179,7 +245,7 @@
       } else if (showValidation) {
         target.classList.add('bad');
       }
-      target.textContent = state.colTargets[c];
+      putNumber(target, state.colTargets[c]);
       target.title = `יעד לטור ${c + 1}`;
       boardEl.appendChild(target);
     }
@@ -193,8 +259,8 @@
         const cell = document.createElement('button');
         cell.type = 'button';
         cell.className = `cell${state.keep[r][c] ? '' : ' removed'}`;
-        cell.textContent = state.values[r][c];
-        cell.setAttribute('aria-label', `${state.keep[r][c] ? 'מחיקת' : 'החזרת'} המספר ${state.values[r][c]} בשורה ${r + 1}, טור ${c + 1}`);
+        putNumber(cell, state.values[r][c]);
+        cell.setAttribute('aria-label', `${state.keep[r][c] ? 'מחיקת' : 'החזרת'} המספר ${displayNumber(state.values[r][c])} בשורה ${r + 1}, טור ${c + 1}`);
         cell.dataset.row = r;
         cell.dataset.col = c;
         cell.addEventListener('click', () => toggleCell(r, c));
@@ -209,7 +275,7 @@
       } else if (showValidation) {
         target.classList.add('bad');
       }
-      target.textContent = state.rowTargets[r];
+      putNumber(target, state.rowTargets[r]);
       target.title = `יעד לשורה ${r + 1}`;
       boardEl.appendChild(target);
     }
@@ -295,9 +361,19 @@
     const index = r * SIZE + c;
     if (cells[index]) cells[index].classList.add('correct-flash');
 
-    setMessage(`רמז: המספר ${state.values[r][c]} ${state.keep[r][c] ? 'צריך להישאר' : 'צריך להימחק'} מהלוח.`);
+    setMessage(`רמז: המספר ${displayNumber(state.values[r][c])} ${state.keep[r][c] ? 'צריך להישאר' : 'צריך להימחק'} מהלוח.`);
   }
 
+  modeButtons.forEach(btn => btn.addEventListener('click', () => {
+    if (mode === btn.dataset.mode) return;
+    mode = btn.dataset.mode;
+    modeButtons.forEach(b => {
+      const selected = b.dataset.mode === mode;
+      b.classList.toggle('selected', selected);
+      b.setAttribute('aria-pressed', String(selected));
+    });
+    startNewGame();
+  }));
   resetBtn.addEventListener('click', resetLevel);
   newGameBtn.addEventListener('click', startNewGame);
   checkBtn.addEventListener('click', checkAnswer);

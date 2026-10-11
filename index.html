@@ -17,6 +17,10 @@
 
     <section class="intro">
       <p>מחקו מספרים מכוונים כדי להגיע לסכום הנכון בכל שורה ובכל טור.</p>
+      <div class="mode-switch" role="group" aria-label="בחירת רמת קושי">
+        <button type="button" class="mode-button prisma-asset-button selected" data-mode="regular" aria-pressed="true"><span>רמה רגילה</span></button>
+        <button type="button" class="mode-button prisma-asset-button" data-mode="advanced" aria-pressed="false"><span>רמה מתקדמת</span></button>
+      </div>
       <div class="status-strip" aria-label="מצב המשחק">
         <div class="status-card"><span>שלב</span><strong id="levelValue">1</strong></div>
         <div class="status-card"><span>ניקוד</span><strong id="scoreValue">0</strong></div>
@@ -25,14 +29,15 @@
     </section>
 
     <section class="action-bar" aria-label="פעולות המשחק">
-      <button id="newGameBtn" class="btn btn-primary" type="button">משחק חדש</button>
-      <button id="resetBtn" class="btn btn-secondary" type="button">איפוס</button>
-      <button id="hintBtn" class="btn btn-hint" type="button">
-        <span aria-hidden="true">💡</span> רמז
+      <button id="newGameBtn" class="prisma-image-button restart-button" type="button" aria-label="משחק חדש" title="משחק חדש">
+        <img src="assets/button_restart_rect.svg" alt="" aria-hidden="true" />
       </button>
-      <button id="checkBtn" class="btn btn-check" type="button">
-        <span aria-hidden="true">✓</span> בדיקת תשובות
+      <button id="resetBtn" class="prisma-asset-button action-button" type="button"><span>איפוס</span></button>
+      <button id="hintBtn" class="prisma-asset-button action-button hint-action" type="button">
+        <img src="assets/hint_rounded_rect.svg" alt="" aria-hidden="true" />
+        <span>רמז</span>
       </button>
+      <button id="checkBtn" class="prisma-asset-button action-button wide-action" type="button"><span>בדיקת תשובות</span></button>
     </section>
 
     <section class="workspace">
@@ -48,7 +53,7 @@
         <h2>איך משחקים?</h2>
         <ol>
           <li>לחצו על מספר כדי למחוק אותו מהלוח.</li>
-          <li>בלוח יש מספרים חיוביים ושליליים, ולכן חשוב להתחשב גם בסימן.</li>
+          <li>בלוח יש מספרים חיוביים ושליליים, ולכן חשוב להתחשב גם בסימן. ברמה המתקדמת מופיעים גם שברים ומספרים עשרוניים.</li>
           <li>סכום המספרים שנותרו בכל שורה צריך להתאים ליעד שמימין.</li>
           <li>סכום המספרים שנותרו בכל טור צריך להתאים ליעד שמעליו.</li>
           <li>אפשר ללחוץ שוב על מספר שנמחק כדי להחזיר אותו.</li>

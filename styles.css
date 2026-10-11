@@ -79,3 +79,90 @@ button:focus-visible{outline:3px solid rgba(131,32,88,.24);outline-offset:3px}
   .action-bar .btn{width:100%}
   .status-card{width:74px}
 }
+
+/* Focused Prisma refinements and difficulty selector */
+.mode-switch{display:flex;justify-content:center;gap:8px;margin:0 auto 18px;direction:rtl}
+.mode-button{cursor:pointer;border:1px solid #d6dfe0;background:white;color:var(--blue);padding:9px 20px;border-radius:12px;font-weight:600;font-size:17px;min-height:44px}
+.mode-button.selected{background:var(--burgundy);border-color:var(--burgundy);color:white}
+.mode-button:hover:not(.selected){background:#f5eef2}
+.btn{box-shadow:0 2px 5px rgba(23,54,94,.05)}
+.target.column.matched{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,54,94,.12)}
+.target.row.matched{background:var(--green-dark);border-color:var(--green-dark);box-shadow:0 0 0 3px rgba(109,181,128,.14)}
+.math-fraction-wrap{display:inline-flex;align-items:center;justify-content:center;gap:.12em;direction:ltr;unicode-bidi:isolate}
+.math-fraction-sign{font-size:.95em;line-height:1;display:inline-flex;align-items:center}
+.math-fraction{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;font-size:.78em;line-height:1.05;direction:ltr;min-width:1.2em}
+.math-fraction>span:first-child{border-bottom:1.6px solid currentColor;padding:0 .12em .07em;width:100%;text-align:center}
+.math-fraction>span:last-child{padding-top:.07em}
+@media(max-width:480px){.mode-switch{gap:8px}.mode-button{padding:9px 13px;font-size:16px}.cell,.target{font-size:18px}}
+
+
+/* Prisma game controls — exact assets from the Prisma Drive library */
+.prisma-asset-button{
+  position:relative;
+  isolation:isolate;
+  border:0;
+  background:transparent;
+  color:#fff;
+  min-height:50px;
+  min-width:145px;
+  padding:11px 24px;
+  font-family:SimplerPro,Arial,sans-serif;
+  font-size:17px;
+  font-weight:600;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  border-radius:8px;
+  overflow:hidden;
+  transition:transform .12s ease,filter .12s ease,opacity .12s ease;
+}
+.prisma-asset-button::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:url('assets/button_blank_rect.svg') center/100% 100% no-repeat;
+}
+.prisma-asset-button:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.prisma-asset-button:active{transform:translateY(0)}
+.prisma-asset-button:focus-visible,.prisma-image-button:focus-visible{outline:3px solid rgba(19,56,99,.25);outline-offset:3px}
+.prisma-asset-button:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+.prisma-asset-button img{width:31px;height:31px;object-fit:contain;flex:0 0 auto}
+.mode-switch{gap:10px;margin-bottom:18px}
+.mode-button{min-width:150px;min-height:48px;padding:9px 20px;color:#fff;border:0;background:transparent;border-radius:8px}
+.mode-button.selected{background:transparent;color:#fff;filter:none;transform:translateY(-1px);box-shadow:0 0 0 3px rgba(19,56,99,.16)}
+.mode-button:not(.selected){opacity:.66}
+.mode-button:hover:not(.selected){background:transparent;opacity:.9}
+.action-bar{gap:10px;align-items:center}
+.action-button{min-width:125px}
+.wide-action{min-width:176px}
+.hint-action img{width:30px;height:30px;border-radius:5px}
+.prisma-image-button{
+  appearance:none;
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .12s ease,filter .12s ease,opacity .12s ease;
+}
+.prisma-image-button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.prisma-image-button:active{transform:translateY(0)}
+.restart-button{width:166px;height:57px}
+.restart-button img{display:block;width:100%;height:100%;object-fit:fill}
+@media(max-width:700px){
+  .prisma-asset-button{min-width:0;width:100%;font-size:16px;padding:9px 12px}
+  .restart-button{width:100%;height:54px}
+  .mode-button{width:auto;min-width:135px}
+}
+@media(max-width:480px){
+  .mode-switch{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:330px}
+  .mode-button{min-width:0;width:100%;font-size:15px;padding-inline:10px}
+  .action-bar{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:440px;margin-inline:auto}
+  .restart-button{width:100%}
+}
