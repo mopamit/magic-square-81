@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Rounded Rectangle Background -->
+  <rect x="2" y="2" width="96" height="96" rx="8" fill="#133863" />
+  
+  <!-- Speaker Body -->
+  <!-- Left base rectangle -->
+  <path d="M 20 40 L 28 40 L 28 62 L 20 62 Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
+  <!-- Speaker cone -->
+  <path d="M 28 40 L 56 24 L 56 78 L 28 62 Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- Inner Sound Wave -->
+  <path d="M 65 37 A 17 17 0 0 1 65 65" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Outer Sound Wave -->
+  <path d="M 72 27 A 30 30 0 0 1 72 75" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+</svg>
